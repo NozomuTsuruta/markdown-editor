@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node", // モジュールの解決方法
+    "outDir": "./dist/", // 出力ディレクトリ
+    "target": "ES2015", // 出力対象のJSのバージョン
+    "strict": true
+  }
+}
