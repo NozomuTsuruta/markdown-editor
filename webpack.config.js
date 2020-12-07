@@ -13,7 +13,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".js", ".ts", "tsx"], // モジュールとして解決する拡張子(外部ライブラリを使うファイル)
+    extensions: [".js", ".ts", ".tsx"], // モジュールとして解決する拡張子(外部ライブラリを使うファイル)
   },
   output: {
     // 出力するファイルの設定
@@ -21,4 +21,8 @@ module.exports = {
     filename: "index.js", // 出力するファイル
     publicPath: "dist/", // 変換する時に相対パスにdist/を追加
   },
+  devServer: {
+      hot: true, // ファイル変更時に自動的に反映
+      open: true, // 起動時にブラウザで開く
+  }
 };
