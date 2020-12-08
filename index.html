@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
+    <link rel="manifest" href="./manifest.json" />
     <title>Markdown Editor</title>
   </head>
   <body>
     <div id="app"></div>
     <script src="./dist/index.js"></script>
     <script type="text/javascript">
-      if ("serviceWorker" in navigator) {　// ブラウザにswが実装されているか
+      if ("serviceWorker" in navigator) {
+        // ブラウザにswが実装されているか
         window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js").then( // swを登録
+          navigator.serviceWorker.register("./sw.js").then(
+            // swを登録
             (registration) => {
               console.log(
                 "ServiceWorker registration successful with scope: ",
