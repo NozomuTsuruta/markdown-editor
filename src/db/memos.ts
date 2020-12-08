@@ -17,7 +17,21 @@ export const putMemo = async (title: string, text: string): Promise<void> => {
   await memos.put({ datetime, title, text }); // テーブルに追加
 };
 
+const NUM_PER_PAGE: number = 10;
+
+export const getMemoPageCount = async (): Promise<number> => {
+  const totalCount = await memos.count();
+  const pageCount = Math.ceil(totalCount / NUM_PER_PAGE);
+  return pageCount > 0 ? pageCount : 1;
+};
+
 /** データを取得 */
-export const getMemos = (): Promise<MemoRecord[]> => {
-  return memos.orderBy("datetime").reverse().toArray(); // datetimeの昇順(古い)→逆→配列に変換
+export const getMemos = (page: number): Promise<MemoRecord[]> => {
+  const offset = (page - 1) * NUM_PER_PAGE;
+  return memos
+    .orderBy("datetime")
+    .reverse()
+    .offset(offset) // 取得開始位置
+    .limit(NUM_PER_PAGE)
+    .toArray();
 };
