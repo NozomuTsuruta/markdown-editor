@@ -16,3 +16,8 @@ export const putMemo = async (title: string, text: string): Promise<void> => {
   const datetime = new Date().toISOString(); // ISO8601形式→視認性と取扱に優れる
   await memos.put({ datetime, title, text }); // テーブルに追加
 };
+
+/** データを取得 */
+export const getMemos = (): Promise<MemoRecord[]> => {
+  return memos.orderBy("datetime").reverse().toArray(); // datetimeの昇順(古い)→逆→配列に変換
+};
