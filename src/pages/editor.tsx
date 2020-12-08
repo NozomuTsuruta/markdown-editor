@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -6,15 +6,29 @@ import { Button } from "../components/button";
 import { Header } from "../components/header";
 import { SaveModal } from "../components/save_modal";
 import { putMemo } from "../db/memos";
+import ConvertMarkdownWorker from "worker-loader!../worker/convert_markdown_worker"; // Workerを読み込む
 
 interface Props {
   text: string;
   setText: (text: string) => void;
 }
 
+const convertMarkdownWorker = new ConvertMarkdownWorker();
+
 export const Editor: React.FC<Props> = (props) => {
   const { text, setText } = props;
   const [showModal, setShowModal] = useState(false);
+  const [html, setHtml] = useState("");
+
+  useEffect(() => {
+    convertMarkdownWorker.onmessage = (event) => {
+      setHtml(event.data.html); // workerから値を受け取る
+    };
+  }, []);
+
+  useEffect(() => {
+    convertMarkdownWorker.postMessage(text); // workerに値を送信
+  }, [text]);
 
   return (
     <>
@@ -32,7 +46,7 @@ export const Editor: React.FC<Props> = (props) => {
           value={text}
         />
         <Preview>
-          <ReactMarkdown source={text} />
+          <div dangerouslySetInnerHTML={{ __html: html }} />
         </Preview>
       </Wrapper>
       {showModal && (
